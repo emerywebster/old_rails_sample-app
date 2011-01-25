@@ -114,3 +114,56 @@ a.signupButton {
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
 }
+
+
+/* User show page with tables*/
+/*
+table.profile {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+td.main {
+  width: 70%;
+  padding: 1em;
+}
+
+td.sidebar {
+  width: 30%;
+  padding: 1em;
+  vertical-align: top;
+  background: #ffc;
+}
+
+.profile img.gravatar {
+  border: 1px solid #999;
+  margin-bottom: -15px;
+}
+*/
+
+
+/*User show page with divs */
+.profile {
+  margin-bottom: 0;
+  height: 100px;
+}
+
+.main {
+  padding: 1em;
+  display: inline;
+  width: 400px;
+  float: left;
+}
+
+.sidebar {
+  padding: 1em;
+  background: #ffc;
+  width: 200px;
+  float: right;
+  display: inline;
+}
+
+.profile img.gravatar {
+  border: 1px solid #999;
+  margin-bottom: -15px;
+}
