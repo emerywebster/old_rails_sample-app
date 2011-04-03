@@ -2,9 +2,11 @@ class UsersController < ApplicationController
   before_filter :authenticate, :only => [:index, :edit, :update, :destroy]
   before_filter :correct_user, :only => [:edit, :update]
   before_filter :admin_user,   :only => :destroy
+  before_filter :signed_in_user, :only => [:new, :create]
   
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(:page => params[:page])
     @title = @user.name
   end  
   
@@ -48,16 +50,20 @@ class UsersController < ApplicationController
   end
   
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
+    user = User.find(params[:id])
+    unless current_user?(user)
+      user.destroy
+      flash[:success] = "User destroyed."
+    end
     redirect_to users_path
   end
   
   private
   
-    def authenticate
-      deny_access unless signed_in?
-    end
+    # def authenticate
+    #   deny_access unless signed_in?
+    # end
+    # HAS BEEN ADDED TO SESSIONS HELPER FOR MICROPOST AUTHENTICATION
     
     def correct_user
       @user = User.find(params[:id])  # moved from "def edit" so users could only access their own
@@ -66,5 +72,12 @@ class UsersController < ApplicationController
     
     def admin_user
       redirect_to(root_path) unless current_user.admin?
+    end
+    
+    def signed_in_user
+      if signed_in?
+        flash[:info] = "You're already logged in!"
+        redirect_to(root_path)
+      end
     end
 end

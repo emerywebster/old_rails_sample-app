@@ -51,7 +51,32 @@ describe UsersController do
                                            :content => "2")
         response.should have_selector("a", :href => "/users?page=2",
                                            :content => "Next")
-      end                                 
+      end
+      
+      describe "delete links" do
+        
+        describe "as admin users" do
+          
+          before(:each) do 
+            @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+            test_sign_in(@admin)
+            get :index
+          end
+          
+          it "should appear" do
+            user = @users.first
+            response.should have_selector("a", :title => "Delete #{user.name}", :content => "delete")
+          end
+        end
+        
+        describe "as non-admin users" do
+          
+          it "should not appear" do
+            user = @user
+            response.should_not have_selector("a", :title => "Delete #{user.name}", :content => "delete")
+          end
+        end
+      end                                   
     end
   end
 
@@ -84,6 +109,14 @@ describe UsersController do
     it "should have a profile image" do 
       get :show, :id => @user
       response.should have_selector("h1>img", :class => "gravatar")
+    end
+    
+    it "should show the user's microposts" do
+      mp1 = Factory(:micropost, :user => @user, :content => "Foo bar")
+      mp2 = Factory(:micropost, :user => @user, :content => "Baz quux")
+      get :show, :id => @user
+      response.should have_selector("span.content", :content => mp1.content)
+      response.should have_selector("span.content", :content => mp2.content)
     end
   end
 
@@ -307,14 +340,14 @@ describe UsersController do
         test_sign_in(@user)
         delete :destroy, :id => @user
         response.should redirect_to(root_path)
-      end
+      end 
     end
     
     describe "as an admin user" do
       
       before(:each) do
-        admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(admin)
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
       end
       
       it "should destroy the user" do
@@ -327,6 +360,21 @@ describe UsersController do
         delete :destroy, :id => @user
         response.should redirect_to(users_path)
       end
+      
+      it "should not be able to delete itself" do
+        lambda do
+          delete :destroy, :id => @admin
+        end.should_not change(User, :count)
+        response.should redirect_to(users_path)
+      end        
+    end
+  end
+  
+  describe "not being able to sign up if you're already signed in" do
+    it "should redirect to the root" do
+      test_sign_in(Factory(:user))
+      get :new
+      response.should redirect_to root_path
     end
   end
 end

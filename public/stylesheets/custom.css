@@ -145,7 +145,11 @@ td.sidebar {
 /*User show page with divs */
 .profile {
   margin-bottom: 0;
-  height: 100px;
+  overflow: hidden;
+}
+
+.front {
+  overflow: hidden;
 }
 
 .main {
@@ -160,12 +164,16 @@ td.sidebar {
   background: #ffc;
   width: 200px;
   float: right;
-  display: inline;
+  margin: 0 auto;
 }
 
 .profile img.gravatar {
   border: 1px solid #999;
   margin-bottom: -15px;
+}
+
+.profile h1 {
+	margin-bottom: 20px;
 }
 
 .field, .actions {
@@ -223,3 +231,68 @@ ul.users {
 .users li {
   list-style: none;
 }
+
+h1.micropost {
+  margin-bottom: 0.3em;
+}
+
+.microposts {
+  margin-top: 1em;
+}
+
+.microposts .gravatar {
+	border-top: 1px solid #ccc;
+	vertical-align: top;
+	width: 50px;
+	display: inline;
+	float: left;
+	margin-right: 10px;
+}
+
+.microposts .micropost {
+	border-top: 1px solid #ccc;
+	vertical-align: top;
+	padding: 10px 0px 10px 0px;
+}
+
+.microposts .micropost span.timestamp {
+	display: block;
+	font-size: 85%;
+	color: #666;
+}
+
+.deletePost {
+	display: inline;
+	float: right;
+	margin-top: -40px;
+}
+
+.user_info img {
+	padding-right: 0.1em;
+}
+
+.user_info a {
+	text-decoration: none;
+}
+
+.user_info span.user_name {
+	position: absolute;
+}
+
+.user_info span.microposts {
+	font-size: 80%;
+}
+
+.pagination {
+	padding-top: 15px;
+}
+
+form.new_micropost {
+	margin-bottom: 2em;
+}
+
+form.new_micropost textarea {
+	height: 4em;
+	margin-bottom: 0;
+}
+
